@@ -1,0 +1,17 @@
+@use './variables' as *;
+@use './theme-mixins' as *;
+
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+//   font-family: $fuente-contenidos;
+}
+
+main {
+  flex: 1 0 auto; /* ocupa el espacio disponible */
+}
+
+.AppFooter {
+  margin-top: auto; /* empuja footer al fondo */
+}

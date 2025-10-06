@@ -1,23 +1,39 @@
-import logo from './logo.svg';
+import React, {useContext, useState} from 'react';
+import UserContext from './context/userContext';
 import './App.css';
+import styles from './styles/app.module.scss';
+import Auth from './components/Auth';
+import TablaCuentas from './components/TablaCuentas';
+import SelectorMeses from './components/SelectorMeses';
+import { obtenerPlanilla } from './utils/firestoreHelper';
+
 
 function App() {
+  const { user } = useContext(UserContext);
+  const [planilla, setPlanilla] = useState(null);
+
+  const handleSeleccionarMes = async (mes) => {
+    if (!user || !mes) return;
+    const data = await obtenerPlanilla(user.uid, mes);
+    setPlanilla(data);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={styles.App}>
+      <Auth/>
+      
+      {/* {user && <TablaCuentas />} */}
+      {user && (
+        <>
+          <SelectorMeses onSeleccionarMes={handleSeleccionarMes} />
+          {planilla ? (
+            <TablaCuentas data={planilla} />
+          ) : (
+            <p>Seleccione un mes para ver la planilla</p>
+          )}
+        </>
+      )}
+      {!user && <p>Debés iniciar sesión para ver las planillas.</p>}
     </div>
   );
 }

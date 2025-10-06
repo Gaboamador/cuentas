@@ -1,0 +1,53 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/theme-mixins' as *;
+@use 'sass:color';
+
+
+.tablaCuentasContainer {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: auto;
+  display: block;
+  padding: .5rem 0;
+}
+
+.tablaCuentas {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 1px;
+  text-align: left;
+  border: solid 1px $color-secundario;
+  font-size: 0.85rem;
+  vertical-align: middle;
+  min-width: fit-content;
+
+    
+  width: 80%;
+  margin: 0 auto;
+  
+  @include media-down(md) {
+    font-size: .75rem;
+  }
+  @include media-down(sm) {
+    font-size: 0.7rem;
+  }
+}
+
+.tablaCuentas th,
+.tablaCuentas td {
+  border: 1px solid #ccc;
+  padding: 8px;
+}
+
+.tablaCuentas th {
+  background-color: $color-primario;
+  color: $color-texto-claro;
+}
+
+.tablaCuentas input {
+  background-color: $color-secundario; /* celda amarilla */
+  width: 100%;
+  text-align: right;
+  border: none;
+  padding: 4px;
+}

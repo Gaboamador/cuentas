@@ -1,0 +1,54 @@
+@use "sass:map";
+@use 'sass:color';
+
+// Función que intercambia colores de acuerdo al valor de context.master (invertido). Se usa en el <div> padre del elemento al que se quiere aplicar
+@mixin theme($property, $light-value, $dark-value) {
+  #{$property}: $light-value;
+  
+  .invertido & {
+    #{$property}: $dark-value;
+  }
+}
+
+// Función que intercambia colores de acuerdo al valor de context.master (invertido). Se usa directamente en el mismo elemento al que se quiere aplicar
+@mixin theme-elemento($property, $light-value, $dark-value) {
+  #{$property}: $light-value;
+  
+  &.invertido {
+    #{$property}: $dark-value;
+  }
+}
+
+// Función que detecta cambio de ancho de pantalla
+$breakpoints: (
+  xsm: 320px,
+  sm400: 400px,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px,
+);
+@mixin media-up($breakpoint){
+    @if map.has-key($breakpoints, $breakpoint){
+        @media screen and (min-width: map.get($breakpoints, $breakpoint)){
+            @content
+        }
+    }
+};
+@mixin media-down($breakpoint){
+    @if map.has-key($breakpoints, $breakpoint){
+        @media screen and (max-width: map.get($breakpoints, $breakpoint)){
+            @content
+        }
+    }
+};
+
+// Función que ajusta las variantes de colores (tono claro y tono oscuro)
+@function light-variant($color) {
+  @return color.adjust($color, $lightness: 25%);
+}
+
+@function dark-variant($color) {
+  @return color.adjust($color, $lightness: -20%);
+}
