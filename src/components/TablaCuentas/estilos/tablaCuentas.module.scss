@@ -21,9 +21,28 @@
   vertical-align: middle;
   min-width: fit-content;
 
-    
   width: 80%;
   margin: 0 auto;
+
+  tr[data-bank="bbva"] {
+    background-color:	#001391;
+  }
+
+  tr[data-bank="bna"] {
+    background-color: #005f86;
+  }
+
+  tr[data-bank="dolares"] {
+    background-color: #278664;
+  }
+
+  tr[data-bank="expensas"] {
+    background-color: #ed7d31;
+  }
+
+  tr[data-bank="totales"] {
+    background-color: #0d0d0d;
+  }
   
   @include media-down(md) {
     font-size: .75rem;
@@ -40,14 +59,14 @@
 }
 
 .tablaCuentas th {
-  background-color: $color-primario;
   color: $color-texto-claro;
 }
 
 .tablaCuentas input {
-  background-color: $color-secundario; /* celda amarilla */
+  background-color: $color-secundario;
   width: 100%;
   text-align: right;
   border: none;
   padding: 4px;
+
 }

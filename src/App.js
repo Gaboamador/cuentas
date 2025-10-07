@@ -6,6 +6,7 @@ import Auth from './components/Auth';
 import TablaCuentas from './components/TablaCuentas';
 import SelectorMeses from './components/SelectorMeses';
 import { obtenerPlanilla } from './utils/firestoreHelper';
+import PlanillasSwiper from './components/PlanillasSwiper';
 
 
 function App() {
@@ -23,7 +24,7 @@ function App() {
       <Auth/>
       
       {/* {user && <TablaCuentas />} */}
-      {user && (
+      {/* {user && (
         <>
           <SelectorMeses onSeleccionarMes={handleSeleccionarMes} />
           {planilla ? (
@@ -33,7 +34,8 @@ function App() {
           )}
         </>
       )}
-      {!user && <p>Debés iniciar sesión para ver las planillas.</p>}
+      {!user && <p>Debés iniciar sesión para ver las planillas.</p>} */}
+      <PlanillasSwiper />
     </div>
   );
 }

@@ -1,15 +1,86 @@
+// import React, { useState, useEffect, useContext } from "react";
+// import { calcularFormulas } from "../../utils/formulas";
+// import { guardarPlanilla, obtenerPlanilla } from "../../utils/firestoreHelper";
+// import UserContext from "../../context/userContext";
+// import styles from './estilos/tablaCuentas.module.scss'
+// import globalStyles from '../../styles/globalStyles.module.scss'
+
+// export default function TablaCuentas({mesActivo}) {
+//   const { user } = useContext(UserContext);
+
+//   const [valores, setValores] = useState({
+//     colchon: 0,
+//     visaBBVATotalResumen: 0,
+//     dbRg5617: 0,
+//     visaBNA: 0,
+//     mcBBVA: 0,
+//     mcBNA: 0,
+//     valorUSD: 0,
+//     dolares: 0,
+//     exp1: 0,
+//     exp2: 0,
+//     cajaAhorroActual: 0,
+//   });
+
+//   const [resultados, setResultados] = useState({});
+
+//   // Cargar planilla de Firestore al montar
+// useEffect(() => {
+//   if (!user || !mesActivo) return;
+
+//   // Aseguramos que mesActivo sea un string simple
+//   const mes = String(mesActivo);
+
+//   let isMounted = true;
+
+//   obtenerPlanilla(user.uid, mes).then(data => {
+//     if (!isMounted) return;
+//     if (data?.valores) setValores(data.valores);
+//     else setValores(prev => ({ ...prev })); // reset o deja valores previos
+//   });
+
+//   return () => { isMounted = false };
+// }, [user, mesActivo?.toString()]);
+
+//   // Calcular resultados cada vez que cambian los valores
+//   useEffect(() => {
+//     setResultados(calcularFormulas(valores));
+//   }, [valores]);
+
+//   const handleChange = (e) => {
+//     const { name, value } = e.target;
+//     setValores({
+//       ...valores,
+//       [name]: parseFloat(value) || 0
+//     });
+//   };
+
+//     const handleGuardar = async () => {
+//     if (!user) return alert("Debes iniciar sesión para guardar.");
+//     if (!mesActivo) return alert("No hay mes activo definido.");
+//     await guardarPlanilla(user.uid, mesActivo, { valores, resultados });
+//     alert(`Planilla de ${mesActivo} guardada correctamente.`);
+//   };
+
+//   const fmt = (n) => 
+//     n === undefined || n === null || Number.isNaN(Number(n)) 
+//       ? "" 
+//       : new Intl.NumberFormat('es-AR', {
+//           minimumFractionDigits: 2,
+//           maximumFractionDigits: 2
+//         }).format(n);
 import React, { useState, useEffect, useContext } from "react";
 import { calcularFormulas } from "../../utils/formulas";
-import { guardarPlanilla, obtenerPlanilla } from "../../utils/firestoreHelper";
+import { guardarPlanilla } from "../../utils/firestoreHelper";
 import UserContext from "../../context/userContext";
 import styles from './estilos/tablaCuentas.module.scss'
 import globalStyles from '../../styles/globalStyles.module.scss'
 
-export default function TablaCuentas() {
+export default function TablaCuentas({ planilla, onGuardar }) {
   const { user } = useContext(UserContext);
-  const mesActual = new Date().toISOString().slice(0,7); // YYYY-MM
 
-  const [valores, setValores] = useState({
+  // Si la planilla tiene datos, usamos esos valores; si es nueva, iniciamos vacíos
+  const [valores, setValores] = useState(planilla.data?.valores || {
     colchon: 0,
     visaBBVATotalResumen: 0,
     dbRg5617: 0,
@@ -23,15 +94,16 @@ export default function TablaCuentas() {
     cajaAhorroActual: 0,
   });
 
-  const [resultados, setResultados] = useState({});
+  const [resultados, setResultados] = useState(planilla.data?.resultados || {});
 
-  // Cargar planilla de Firestore al montar
+  // Cada vez que cambia la planilla (swipe), reseteamos valores si es nueva
   useEffect(() => {
-    if (!user) return;
-    obtenerPlanilla(user.uid, mesActual).then(data => {
-      if (data?.valores) setValores(data.valores);
+    setValores(planilla.data?.valores || {
+      colchon: 0, visaBBVATotalResumen:0, dbRg5617:0, visaBNA:0,
+      mcBBVA:0, mcBNA:0, valorUSD:0, dolares:0, exp1:0, exp2:0, cajaAhorroActual:0
     });
-  }, [user]);
+    setResultados(planilla.data?.resultados || {});
+  }, [planilla]);
 
   // Calcular resultados cada vez que cambian los valores
   useEffect(() => {
@@ -40,16 +112,16 @@ export default function TablaCuentas() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setValores({
-      ...valores,
-      [name]: parseFloat(value) || 0
-    });
+    setValores(prev => ({ ...prev, [name]: parseFloat(value) || 0 }));
   };
 
   const handleGuardar = async () => {
-    if (!user) return alert("Debes iniciar sesión para guardar.");
-    await guardarPlanilla(user.uid, mesActual, { valores, resultados });
-    alert("Planilla guardada correctamente.");
+    if (!user) return alert("Debes iniciar sesión");
+    await guardarPlanilla(user.uid, planilla.mes, { valores, resultados });
+    alert(`Planilla de ${planilla.mes} guardada correctamente!`);
+
+    // Avisamos al componente padre que ya se guardó
+    onGuardar(planilla.mes, { valores, resultados });
   };
 
   const fmt = (n) => 
@@ -59,14 +131,14 @@ export default function TablaCuentas() {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2
         }).format(n);
-
+        
   return (
   <div className={globalStyles.componentMain}>
     <div className={styles.tablaCuentasContainer}>
       <table className={styles.tablaCuentas}>
         <tbody>
           {/* SECCIÓN TOTALES */}
-          <tr>
+          <tr data-bank="totales">
             <th colSpan="4">TOTALES</th>
           </tr>
           <tr>
@@ -81,7 +153,7 @@ export default function TablaCuentas() {
               <input 
                 type="number" 
                 name="cajaAhorroActual" 
-                value={valores.cajaAhorroActual} 
+                value={valores.cajaAhorroActual}
                 onChange={handleChange} 
                 step="any" 
               />
@@ -108,7 +180,7 @@ export default function TablaCuentas() {
           </tr>
 
           {/* SECCIÓN BBVA */}
-          <tr>
+          <tr data-bank="bbva">
             <th colSpan="4">BBVA</th>
           </tr>
           <tr>
@@ -151,7 +223,7 @@ export default function TablaCuentas() {
           </tr>
 
           {/* SECCIÓN BNA */}
-          <tr>
+          <tr data-bank="bna">
             <th colSpan="4">BNA</th>
           </tr>
           <tr>
@@ -178,7 +250,7 @@ export default function TablaCuentas() {
           </tr>
 
           {/* SECCIÓN DÓLARES */}
-          <tr>
+          <tr data-bank="dolares">
             <th colSpan="4">DOLARES / STOP DEBIT</th>
           </tr>
           <tr>
@@ -209,7 +281,7 @@ export default function TablaCuentas() {
           </tr>
 
           {/* SECCIÓN EXPENSAS */}
-          <tr>
+          <tr data-bank="expensas">
             <th colSpan="4">EXPENSAS</th>
           </tr>
           <tr>
