@@ -75,45 +75,64 @@ import { guardarPlanilla } from "../../utils/firestoreHelper";
 import UserContext from "../../context/userContext";
 import styles from './estilos/tablaCuentas.module.scss'
 import globalStyles from '../../styles/globalStyles.module.scss'
+import valoresMapping from "../../utils/valoresMapping";
+import ModalValores from "../ModalValores";
 
 export default function TablaCuentas({ planilla, onGuardar }) {
   const { user } = useContext(UserContext);
 
-  // Si la planilla tiene datos, usamos esos valores; si es nueva, iniciamos vacíos
-  const [valores, setValores] = useState(planilla.data?.valores || {
-    colchon: 0,
-    visaBBVATotalResumen: 0,
-    dbRg5617: 0,
-    visaBNA: 0,
-    mcBBVA: 0,
-    mcBNA: 0,
-    valorUSD: 0,
-    dolares: 0,
-    exp1: 0,
-    exp2: 0,
-    cajaAhorroActual: 0,
-  });
+// const [valores, setValores] = useState(
+//   planilla.data?.valores ||
+//   Object.keys(valoresMapping).reduce((acc, key) => {
+//     acc[key] = "";
+//     return acc;
+//   }, {})
+// );
+const [valores, setValores] = useState(() => {
+  const inicial = planilla.data?.valores || Object.keys(valoresMapping).reduce((acc, key) => {
+    acc[key] = "";
+    return acc;
+  }, {});
+  
+  // Forzamos que colchon sea 20000
+  inicial.colchon = 20000;
+  
+  return inicial;
+});
 
-  const [resultados, setResultados] = useState(planilla.data?.resultados || {});
 
-  // Cada vez que cambia la planilla (swipe), reseteamos valores si es nueva
-  useEffect(() => {
-    setValores(planilla.data?.valores || {
-      colchon: 0, visaBBVATotalResumen:0, dbRg5617:0, visaBNA:0,
-      mcBBVA:0, mcBNA:0, valorUSD:0, dolares:0, exp1:0, exp2:0, cajaAhorroActual:0
-    });
-    setResultados(planilla.data?.resultados || {});
-  }, [planilla]);
+const [mostrarModal, setMostrarModal] = useState(false);
+const [resultados, setResultados] = useState(planilla.data?.resultados || {});
 
-  // Calcular resultados cada vez que cambian los valores
-  useEffect(() => {
-    setResultados(calcularFormulas(valores));
-  }, [valores]);
+// 🔁 Cuando cambia la planilla (por swipe)
+// useEffect(() => {
+//   setValores(
+//     planilla.data?.valores ||
+//     Object.keys(valoresMapping).reduce((acc, key) => {
+//       acc[key] = ""; // 👈 también vacío acá
+//       return acc;
+//     }, {})
+//   );
+//   setResultados(planilla.data?.resultados || {});
+// }, [planilla]);
+useEffect(() => {
+  const inicial = planilla.data?.valores || Object.keys(valoresMapping).reduce((acc, key) => {
+    acc[key] = "";
+    return acc;
+  }, {});
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setValores(prev => ({ ...prev, [name]: parseFloat(value) || 0 }));
-  };
+  // Colchón siempre 20000
+  inicial.colchon = 20000;
+
+  setValores(inicial);
+  setResultados(planilla.data?.resultados || {});
+}, [planilla]);
+
+// 🧮 Calcular resultados cada vez que cambian los valores
+useEffect(() => {
+  setResultados(calcularFormulas(valores));
+}, [valores]);
+
 
   const handleGuardar = async () => {
     if (!user) return alert("Debes iniciar sesión");
@@ -132,9 +151,11 @@ export default function TablaCuentas({ planilla, onGuardar }) {
           maximumFractionDigits: 2
         }).format(n);
         
+
   return (
   <div className={globalStyles.componentMain}>
     <div className={styles.tablaCuentasContainer}>
+      <button onClick={() => setMostrarModal(true)}>Ingresar datos</button>
       <table className={styles.tablaCuentas}>
         <tbody>
           {/* SECCIÓN TOTALES */}
@@ -149,29 +170,13 @@ export default function TablaCuentas({ planilla, onGuardar }) {
           </tr>
           <tr>
             <td>Caja ahorro actual</td>
-            <td>
-              <input 
-                type="number" 
-                name="cajaAhorroActual" 
-                value={valores.cajaAhorroActual}
-                onChange={handleChange} 
-                step="any" 
-              />
-            </td>
+            <td>${fmt(valores.cajaAhorroActual)}</td>
             <td>Redondeado</td>
             <td>${fmt(resultados.redondeado)}</td>
           </tr>
           <tr>
             <td>Colchón</td>
-            <td>
-              <input 
-                type="number" 
-                name="colchon" 
-                value={valores.colchon} 
-                onChange={handleChange} 
-                step="any" 
-              />
-            </td>
+            <td>${fmt(valores.colchon)}</td>
             <td>BNA → BBVA</td>
             <td>
               <div>${fmt(resultados.bnaBBVA)}</div>
@@ -187,39 +192,15 @@ export default function TablaCuentas({ planilla, onGuardar }) {
             <td>VISA</td>
             <td>${fmt(resultados.visaBBVANeto)}</td>
             <td>MC</td>
-            <td>
-              <input 
-                type="number" 
-                name="mcBBVA" 
-                value={valores.mcBBVA} 
-                onChange={handleChange} 
-                step="any" 
-              />
-            </td>
+            <td>${fmt(valores.mcBBVA)}</td>
           </tr>
           <tr>
             <td>Total resumen</td>
-            <td>
-              <input 
-                type="number" 
-                name="visaBBVATotalResumen" 
-                value={valores.visaBBVATotalResumen} 
-                onChange={handleChange} 
-                step="any" 
-              />
-            </td>
+            <td>${fmt(valores.visaBBVATotalResumen)}</td>
           </tr>
           <tr>
             <td>DB. RG 5617</td>
-            <td>
-              <input 
-                type="number" 
-                name="dbRg5617" 
-                value={valores.dbRg5617} 
-                onChange={handleChange} 
-                step="any" 
-              />
-            </td>
+            <td>${fmt(valores.dbRg5617)}</td>
           </tr>
 
           {/* SECCIÓN BNA */}
@@ -228,25 +209,9 @@ export default function TablaCuentas({ planilla, onGuardar }) {
           </tr>
           <tr>
             <td>VISA</td>
-            <td>
-              <input 
-                type="number" 
-                name="visaBNA" 
-                value={valores.visaBNA} 
-                onChange={handleChange} 
-                step="any" 
-              />
-            </td>
+            <td>${fmt(valores.visaBNA)}</td>
             <td>MC</td>
-            <td>
-              <input 
-                type="number" 
-                name="mcBNA" 
-                value={valores.mcBNA} 
-                onChange={handleChange} 
-                step="any" 
-              />
-            </td>
+            <td>${fmt(valores.mcBNA)}</td>
           </tr>
 
           {/* SECCIÓN DÓLARES */}
@@ -255,25 +220,9 @@ export default function TablaCuentas({ planilla, onGuardar }) {
           </tr>
           <tr>
             <td>DOLARES</td>
-            <td>
-              <input 
-                type="number" 
-                name="dolares" 
-                value={valores.dolares} 
-                onChange={handleChange} 
-                step="any" 
-              />
-            </td>
+            <td>${fmt(valores.dolares)}</td>
             <td>VALOR USD</td>
-            <td>
-              <input 
-                type="number" 
-                name="valorUSD" 
-                value={valores.valorUSD} 
-                onChange={handleChange} 
-                step="any" 
-              />
-            </td>
+            <td>${fmt(valores.valorUSD)}</td>
           </tr>
           <tr>
             <td>COSTO DOLARES</td>
@@ -286,25 +235,9 @@ export default function TablaCuentas({ planilla, onGuardar }) {
           </tr>
           <tr>
             <td>Expensas_1</td>
-            <td>
-              <input 
-                type="number" 
-                name="exp1" 
-                value={valores.exp1} 
-                onChange={handleChange} 
-                step="any" 
-              />
-            </td>
+            <td>${fmt(valores.exp1)}</td>
             <td>Expensas_2</td>
-            <td>
-              <input 
-                type="number" 
-                name="exp2" 
-                value={valores.exp2} 
-                onChange={handleChange} 
-                step="any" 
-              />
-            </td>
+            <td>${fmt(valores.exp2)}</td>
           </tr>
           <tr>
             <td>Expensas Total</td>
@@ -317,6 +250,14 @@ export default function TablaCuentas({ planilla, onGuardar }) {
         Guardar planilla
       </button>
     </div>
+
+    {mostrarModal && (
+      <ModalValores
+        valores={valores}
+        setValores={setValores}
+        onClose={() => setMostrarModal(false)}
+      />
+    )}
 </div>
   );
 }

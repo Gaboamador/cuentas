@@ -1,0 +1,78 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/theme-mixins' as *;
+@use 'sass:color';
+
+.modalValoresOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modalValores {
+    background: rgb(220,220,220);
+    padding: 1.5rem;
+    border-radius: 12px;
+    width: 400px;
+    // max-height: 80vh;
+    overflow-y: auto;
+}
+
+.inputGroup {
+    display: flex;
+    justify-content: space-between;
+    margin: 0.5rem 0;
+    padding: 4px;
+}
+
+.inputGroup input {
+    width: 120px;
+    text-align: right;
+}
+
+.groupLogosDiv {
+    display: flex;
+}
+
+.groupLogo {
+//   width: 24px;
+  height: 20px;
+  margin-right: 8px;
+  vertical-align: middle;
+  background-color: white;
+    padding: 5px;
+  border-bottom-right-radius: 10px;
+  width: 50px !important;
+}
+
+.groupColchon {
+    background-color: rgba($color-totales, 0.2);
+}
+
+.groupInicio {
+    background-color: rgba($color-totales, 0.2);
+}
+
+.groupBBVA {
+    background-color: rgba($color-bbva, 0.5);
+}
+
+.groupBNA {
+    background-color: rgba($color-bna, 0.5);
+}
+
+.groupDolares {
+    background-color: rgba($color-dolares, 0.5);
+}
+
+.groupExpensas {
+    background-color: rgba($color-expensas, 0.5);
+}
+
+.botones {
+    margin-top: 1rem;
+    text-align: right;
+}

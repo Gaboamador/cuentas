@@ -25,23 +25,23 @@
   margin: 0 auto;
 
   tr[data-bank="bbva"] {
-    background-color:	#001391;
+    background-color:	$color-bbva;
   }
 
   tr[data-bank="bna"] {
-    background-color: #005f86;
+    background-color: $color-bna;
   }
 
   tr[data-bank="dolares"] {
-    background-color: #278664;
+    background-color: $color-dolares;
   }
 
   tr[data-bank="expensas"] {
-    background-color: #ed7d31;
+    background-color: $color-expensas;
   }
 
   tr[data-bank="totales"] {
-    background-color: #0d0d0d;
+    background-color: $color-totales;
   }
   
   @include media-down(md) {
