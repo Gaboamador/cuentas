@@ -5,9 +5,10 @@ $color-primario: #232D4F;
 $color-secundario: #E6BB61; 
 $color-terciario: #45658D;
 
-// Colores de texto
+// Colores de texto y otros colores UI
 $color-texto-claro: #ffffff;
 $color-texto-oscuro: #141414;
+$color-bordes-tabla: #dddddd;
 
 // Colores de grupos y bancos
 $color-bbva: #001391;
@@ -15,3 +16,28 @@ $color-bna: #005f86;
 $color-dolares: #278664;
 $color-expensas: #ed7d31;
 $color-totales: #0d0d0d;
+
+// Variants
+$color-primario-claro: color.mix(white, $color-primario, 50%);
+$color-primario-oscuro: color.mix(black, $color-primario, 75%);
+$color-secundario-claro: color.mix(white, $color-secundario, 50%);
+$color-secundario-oscuro: color.mix(black, $color-secundario, 75%);
+
+// Tipografías
+@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Text:ital,wght@0,300..700;1,300..700&display=swap');
+
+// $fuente-titulos: "Figtree", sans-serif;
+$fuente-contenidos: 'Red Hat Text', 'Roboto', sans-serif;
+
+// Barra de desplazamiento
+::-webkit-scrollbar {
+background-color: $color-primario;
+}
+
+::-webkit-scrollbar-thumb {
+background: $color-secundario;
+}
+
+::-webkit-scrollbar-thumb:hover {
+background: $color-secundario-oscuro;
+}

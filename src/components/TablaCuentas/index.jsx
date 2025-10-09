@@ -1,93 +1,16 @@
-// import React, { useState, useEffect, useContext } from "react";
-// import { calcularFormulas } from "../../utils/formulas";
-// import { guardarPlanilla, obtenerPlanilla } from "../../utils/firestoreHelper";
-// import UserContext from "../../context/userContext";
-// import styles from './estilos/tablaCuentas.module.scss'
-// import globalStyles from '../../styles/globalStyles.module.scss'
-
-// export default function TablaCuentas({mesActivo}) {
-//   const { user } = useContext(UserContext);
-
-//   const [valores, setValores] = useState({
-//     colchon: 0,
-//     visaBBVATotalResumen: 0,
-//     dbRg5617: 0,
-//     visaBNA: 0,
-//     mcBBVA: 0,
-//     mcBNA: 0,
-//     valorUSD: 0,
-//     dolares: 0,
-//     exp1: 0,
-//     exp2: 0,
-//     cajaAhorroActual: 0,
-//   });
-
-//   const [resultados, setResultados] = useState({});
-
-//   // Cargar planilla de Firestore al montar
-// useEffect(() => {
-//   if (!user || !mesActivo) return;
-
-//   // Aseguramos que mesActivo sea un string simple
-//   const mes = String(mesActivo);
-
-//   let isMounted = true;
-
-//   obtenerPlanilla(user.uid, mes).then(data => {
-//     if (!isMounted) return;
-//     if (data?.valores) setValores(data.valores);
-//     else setValores(prev => ({ ...prev })); // reset o deja valores previos
-//   });
-
-//   return () => { isMounted = false };
-// }, [user, mesActivo?.toString()]);
-
-//   // Calcular resultados cada vez que cambian los valores
-//   useEffect(() => {
-//     setResultados(calcularFormulas(valores));
-//   }, [valores]);
-
-//   const handleChange = (e) => {
-//     const { name, value } = e.target;
-//     setValores({
-//       ...valores,
-//       [name]: parseFloat(value) || 0
-//     });
-//   };
-
-//     const handleGuardar = async () => {
-//     if (!user) return alert("Debes iniciar sesión para guardar.");
-//     if (!mesActivo) return alert("No hay mes activo definido.");
-//     await guardarPlanilla(user.uid, mesActivo, { valores, resultados });
-//     alert(`Planilla de ${mesActivo} guardada correctamente.`);
-//   };
-
-//   const fmt = (n) => 
-//     n === undefined || n === null || Number.isNaN(Number(n)) 
-//       ? "" 
-//       : new Intl.NumberFormat('es-AR', {
-//           minimumFractionDigits: 2,
-//           maximumFractionDigits: 2
-//         }).format(n);
 import React, { useState, useEffect, useContext } from "react";
 import { calcularFormulas } from "../../utils/formulas";
 import { guardarPlanilla } from "../../utils/firestoreHelper";
 import UserContext from "../../context/userContext";
 import styles from './estilos/tablaCuentas.module.scss'
-import globalStyles from '../../styles/globalStyles.module.scss'
 import valoresMapping from "../../utils/valoresMapping";
 import ModalValores from "../ModalValores";
+import formatearMes from "../../utils/formatearMes";
+import { FiEdit } from "react-icons/fi";
 
 export default function TablaCuentas({ planilla, onGuardar }) {
   const { user } = useContext(UserContext);
 
-// const [valores, setValores] = useState(
-//   planilla.data?.valores ||
-//   Object.keys(valoresMapping).reduce((acc, key) => {
-//     acc[key] = "";
-//     return acc;
-//   }, {})
-// );
 const [valores, setValores] = useState(() => {
   const inicial = planilla.data?.valores || Object.keys(valoresMapping).reduce((acc, key) => {
     acc[key] = "";
@@ -100,21 +23,9 @@ const [valores, setValores] = useState(() => {
   return inicial;
 });
 
-
 const [mostrarModal, setMostrarModal] = useState(false);
 const [resultados, setResultados] = useState(planilla.data?.resultados || {});
 
-// 🔁 Cuando cambia la planilla (por swipe)
-// useEffect(() => {
-//   setValores(
-//     planilla.data?.valores ||
-//     Object.keys(valoresMapping).reduce((acc, key) => {
-//       acc[key] = ""; // 👈 también vacío acá
-//       return acc;
-//     }, {})
-//   );
-//   setResultados(planilla.data?.resultados || {});
-// }, [planilla]);
 useEffect(() => {
   const inicial = planilla.data?.valores || Object.keys(valoresMapping).reduce((acc, key) => {
     acc[key] = "";
@@ -153,9 +64,18 @@ useEffect(() => {
         
 
   return (
-  <div className={globalStyles.componentMain}>
+  <div>
     <div className={styles.tablaCuentasContainer}>
-      <button onClick={() => setMostrarModal(true)}>Ingresar datos</button>
+      <div className={styles.tituloTablaContainer}>
+        <div className={styles.tituloTabla}>{formatearMes(planilla.mes)}</div>
+        <button
+          onClick={() => setMostrarModal(true)}
+          className={styles.ingresarDatosButton}
+          >
+          <span><FiEdit/></span>
+          <span>Ingresar datos</span>
+          </button>
+      </div>
       <table className={styles.tablaCuentas}>
         <tbody>
           {/* SECCIÓN TOTALES */}
@@ -246,7 +166,7 @@ useEffect(() => {
         </tbody>
       </table>
 
-      <button onClick={handleGuardar} style={{marginTop: "10px"}}>
+      <button className={styles.guardarPlanillaButton} onClick={handleGuardar}>
         Guardar planilla
       </button>
     </div>

@@ -17,8 +17,11 @@
     padding: 1.5rem;
     border-radius: 12px;
     width: 400px;
-    // max-height: 80vh;
     overflow-y: auto;
+}
+
+.modalTitulo {
+
 }
 
 .inputGroup {
@@ -43,7 +46,7 @@
   margin-right: 8px;
   vertical-align: middle;
   background-color: white;
-    padding: 5px;
+  padding: 5px;
   border-bottom-right-radius: 10px;
   width: 50px !important;
 }

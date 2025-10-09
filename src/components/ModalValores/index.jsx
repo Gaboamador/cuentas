@@ -92,7 +92,7 @@ const groupLogos = {
 return (
     <div className={styles.modalValoresOverlay}>
         <div className={styles.modalValores}>
-            <h3>INGRESAR VALORES</h3>
+            <div className={styles.modalTitulo}>INGRESAR VALORES</div>
                 <div className={styles.inputs}>
                     {Object.entries(grupos).map(([group, items]) => (
                     <div key={group} className={groupClass[group]}>
