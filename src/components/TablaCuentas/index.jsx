@@ -1,14 +1,17 @@
 import React, { useState, useEffect, useContext } from "react";
 import { calcularFormulas } from "../../utils/formulas";
-import { guardarPlanilla } from "../../utils/firestoreHelper";
+import { guardarPlanilla, obtenerDatosUsuario } from "../../utils/firestoreHelper";
 import UserContext from "../../context/userContext";
 import styles from './estilos/tablaCuentas.module.scss'
 import valoresMapping from "../../utils/valoresMapping";
 import ModalValores from "../ModalValores";
 import formatearMes from "../../utils/formatearMes";
 import { FiEdit } from "react-icons/fi";
+import CopiarBoton from "../CopiarBoton";
+import textos from "../../utils/textos";
+import CopiarDropdown from "../CopiarDropdown";
 
-export default function TablaCuentas({ planilla, onGuardar }) {
+export default function TablaCuentas({ planilla, onGuardar, mostrarModal, setMostrarModal }) {
   const { user } = useContext(UserContext);
 
 const [valores, setValores] = useState(() => {
@@ -23,7 +26,7 @@ const [valores, setValores] = useState(() => {
   return inicial;
 });
 
-const [mostrarModal, setMostrarModal] = useState(false);
+// const [mostrarModal, setMostrarModal] = useState(false);
 const [resultados, setResultados] = useState(planilla.data?.resultados || {});
 
 useEffect(() => {
@@ -61,20 +64,85 @@ useEffect(() => {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2
         }).format(n);
-        
 
+
+        // Función para obtener el mes anterior en formato 'YYYY-MM'
+const obtenerMesAnterior = (mesActual) => {
+  const [anio, mes] = mesActual.split('-').map(Number); // asume formato 'YYYY-MM'
+  const fecha = new Date(anio, mes - 1, 1); // mes -1 porque JS usa 0-index
+  fecha.setMonth(fecha.getMonth() - 1); // retrocedemos un mes
+  const anioAnterior = fecha.getFullYear();
+  const mesAnterior = String(fecha.getMonth() + 1).padStart(2, '0');
+  return `${anioAnterior}-${mesAnterior}`;
+};
+const mesAnterior = obtenerMesAnterior(planilla.mes);
+
+        const [direccion, setDireccion] = useState(null)
+    const [detalle, setDetalle] = useState(null)
+    const [depto, setDepto] = useState(null)
+    const [cochera, setCochera] = useState(null)
+    const [nombre, setNombre] = useState(null)
+  useEffect(() => {
+    if (!user) return;
+
+    const fetchPerfil = async () => {
+      const data = await obtenerDatosUsuario(user.uid);
+      setDireccion(data.direccion);
+      setDetalle(`${data.depto} + ${data.cochera}`)
+      setDepto(data.depto)
+      setCochera(data.cochera)
+      setNombre(data.nombre)
+    };
+
+    fetchPerfil();
+  }, [user]);
+        
   return (
   <div>
     <div className={styles.tablaCuentasContainer}>
       <div className={styles.tituloTablaContainer}>
-        <div className={styles.tituloTabla}>{formatearMes(planilla.mes)}</div>
+        <div className={styles.tituloTabla}>
+          {formatearMes(planilla.mes).toUpperCase()}
+        </div>
+          
         <button
           onClick={() => setMostrarModal(true)}
           className={styles.ingresarDatosButton}
           >
           <span><FiEdit/></span>
           <span>Ingresar datos</span>
-          </button>
+        </button>
+
+        <div>
+          {/* <CopiarBoton label={'email'} texto={textos.paraPortapapeles.MAIL_COMPROBANTE} />
+          <CopiarBoton label={'asunto'} texto={textos.paraPortapapeles.ASUNTO(formatearMes(mesAnterior), direccion, detalle)} />
+          <CopiarBoton label={'cuerpo'} texto={textos.paraPortapapeles.CUERPO(depto, cochera, `$${fmt(valores.exp1)}`, `$${fmt(valores.exp2)}`, `$${fmt(resultados.expensas)}`, nombre)} /> */}
+        <CopiarDropdown
+          opciones={[
+            { label: "Destinatario", texto: textos.paraPortapapeles.MAIL_COMPROBANTE },
+            {
+              label: "Asunto",
+              texto: textos.paraPortapapeles.ASUNTO(
+                formatearMes(mesAnterior),
+                direccion,
+                detalle
+              ),
+            },
+            {
+              label: "Cuerpo",
+              texto: textos.paraPortapapeles.CUERPO(
+                depto,
+                cochera,
+                `$${fmt(valores.exp1)}`,
+                `$${fmt(valores.exp2)}`,
+                `$${fmt(resultados.expensas)}`,
+                nombre
+              ),
+            },
+          ]}
+        />
+
+        </div>
       </div>
       <table className={styles.tablaCuentas}>
         <tbody>
@@ -151,12 +219,12 @@ useEffect(() => {
 
           {/* SECCIÓN EXPENSAS */}
           <tr data-bank="expensas">
-            <th colSpan="4">EXPENSAS</th>
+            <th colSpan="4">{valoresMapping.exp1.group.toUpperCase()}</th>
           </tr>
           <tr>
-            <td>Expensas_1</td>
+            <td>{valoresMapping.exp1.label}</td>
             <td>${fmt(valores.exp1)}</td>
-            <td>Expensas_2</td>
+            <td>{valoresMapping.exp2.label}</td>
             <td>${fmt(valores.exp2)}</td>
           </tr>
           <tr>
@@ -176,6 +244,7 @@ useEffect(() => {
         valores={valores}
         setValores={setValores}
         onClose={() => setMostrarModal(false)}
+        mesActual={planilla.mes}
       />
     )}
 </div>

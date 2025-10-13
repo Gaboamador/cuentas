@@ -1,0 +1,68 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/theme-mixins' as *;
+@use 'sass:color';
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  font-family: sans-serif;
+}
+
+.botonPrincipal {
+  background-color: $color-primario;
+  color: $color-texto-oscuro;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.2s;
+}
+
+.botonPrincipal:hover {
+  background-color: $color-primario-oscuro;
+}
+
+.flecha {
+  font-size: 0.8em;
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  background: $color-secundario;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  overflow: hidden;
+  animation: fadeIn 0.15s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.item {
+  font-size: 0.9rem;
+    padding: 10px;
+  cursor: pointer;
+  transition: background 0.15s;
+  color: $color-primario;
+}
+
+.item:hover {
+  background-color: #f1f1f1;
+  color: $color-secundario;
+}

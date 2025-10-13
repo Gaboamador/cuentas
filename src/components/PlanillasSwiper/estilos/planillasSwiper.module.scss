@@ -19,6 +19,10 @@ max-width: 100%;
     justify-content: space-between;
     align-items: center;
     padding: 0 1rem;
+
+    &.modalActive {
+        background-color: rgb(220, 220, 220);
+    }
 }
 
 .agregarPlanilla {
@@ -29,14 +33,19 @@ max-width: 100%;
 .agregarPlanillaButton {
      display: flex; 
  gap: 0.5rem;
+ color: $color-primario;
  background-color: $color-secundario;
  border: none;
+ border-radius: 5px;
  padding: 0.25rem 0.5rem;
  margin: 0.5rem 0;
  width: min-content;
  align-items: center;
  text-align: left;
  cursor: pointer;
+ &:hover{
+    background-color: $color-secundario-oscuro;
+ }
 }
 
 .modalContainer {

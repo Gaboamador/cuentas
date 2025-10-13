@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper-bundle.css";
-import { obtenerTodasLasPlanillas, guardarPlanilla } from "../../utils/firestoreHelper";
+import { obtenerTodasLasPlanillas } from "../../utils/firestoreHelper";
 import TablaCuentas from "../TablaCuentas";
 import UserContext from "../../context/userContext";
 import styles from './estilos/planillasSwiper.module.scss'
@@ -99,11 +99,12 @@ export default function PlanillasSwiper() {
     );
   };
 
-  if (!user) return <p>Inicie sesión para ver sus planillas</p>;
+  // if (!user) return <p className={styles.notLoggedIn}>Inicie sesión para ver sus planillas</p>;
+const [mostrarModal, setMostrarModal] = useState(false);
 
   return (
       <div>
-        <div className={styles.controles}>
+        <div className={`${styles.controles} ${mostrarModal ? styles.modalActive : ''}`}>
           <div>
             <select onChange={(e) => irAlMes(e.target.value)} defaultValue="">
               <option value="">Ir al mes...</option>
@@ -156,6 +157,8 @@ export default function PlanillasSwiper() {
               <TablaCuentas
                 planilla={planilla}
                 onGuardar={handleGuardarLocal}
+                mostrarModal={mostrarModal}
+                setMostrarModal={setMostrarModal}
               />
             </div>
           </SwiperSlide>

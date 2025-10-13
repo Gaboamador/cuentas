@@ -5,8 +5,9 @@ import bbva from "../../logos/bbva.svg"
 import bna from "../../logos/bnaNEW.svg"
 import dolares from "../../logos/dolar.svg"
 import expensas from "../../logos/octopusNEW.svg"
+import formatearMes from "../../utils/formatearMes";
 
-export default function ModalValores({ valores, setValores, onClose }) {
+export default function ModalValores({ valores, setValores, onClose, mesActual }) {
   const [localValores, setLocalValores] = useState({});
 
   // Inicializamos valores con formato (coma + puntos) o vacíos
@@ -92,19 +93,21 @@ const groupLogos = {
 return (
     <div className={styles.modalValoresOverlay}>
         <div className={styles.modalValores}>
-            <div className={styles.modalTitulo}>INGRESAR VALORES</div>
+            <div className={styles.modalTitulo}>INGRESAR VALORES - {formatearMes(mesActual)}</div>
                 <div className={styles.inputs}>
                     {Object.entries(grupos).map(([group, items]) => (
-                    <div key={group} className={groupClass[group]}>
+                    <div key={group} className={`${groupClass[group]} ${styles.groupsDiv}`}>
 
                         {/* Logo del grupo */}
-                        <div className={styles.groupLogosDiv}>
+                        <div>
                         {groupLogos[group] && (
+                        <div className={styles.groupLogosDiv}>
                         <img
                             src={groupLogos[group]}
                             alt={group}
                             className={styles.groupLogo}
                         />
+                        </div>
                         )}
                         </div>
 

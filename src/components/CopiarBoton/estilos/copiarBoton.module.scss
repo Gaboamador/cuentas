@@ -1,0 +1,16 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/theme-mixins' as *;
+@use 'sass:color';
+
+.botonCopiar {
+     display: flex; 
+ gap: 0.5rem;
+ background-color: $color-secundario;
+ border: none;
+ padding: 0.25rem 0.5rem;
+ margin: 0.5rem 0;
+ width: min-content;
+ align-items: center;
+ text-align: left;
+ cursor: pointer;
+}

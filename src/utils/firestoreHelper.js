@@ -48,3 +48,12 @@ export const obtenerTodasLasPlanillas = async (userId) => {
     return [];
   }
 };
+
+/**
+ * Obtiene los datos generales del usuario (no las planillas)
+ */
+export const obtenerDatosUsuario = async (userId) => {
+  const ref = doc(db, "users", userId);
+  const snapshot = await getDoc(ref);
+  return snapshot.exists() ? snapshot.data() : null;
+};

@@ -1,0 +1,12 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/theme-mixins' as *;
+@use 'sass:color';
+
+.notLoggedIn {
+display: flex;
+justify-content: center;
+font-size: 1.5rem;
+font-family: $fuente-contenidos;
+color: $color-primario;
+}
+

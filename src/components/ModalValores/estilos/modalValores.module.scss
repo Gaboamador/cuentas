@@ -14,6 +14,7 @@
 
 .modalValores {
     background: rgb(220,220,220);
+    background: $color-primario;
     padding: 1.5rem;
     border-radius: 12px;
     width: 400px;
@@ -21,14 +22,34 @@
 }
 
 .modalTitulo {
+font-size: 1.1rem;
+font-family: $fuente-contenidos;
+font-weight: 500;
+// background-color: $color-terciario-claro;
+border-bottom: 2px solid $color-terciario;
+color: $color-texto-oscuro;
+padding: 0.25rem;
+margin: 0.5rem auto;
+}
 
+.groupsDiv {
+    // margin-top: 0.5rem;
+}
+
+.inputs {
+display: flex;
+flex-direction: column;
+gap: 0.5rem;
 }
 
 .inputGroup {
     display: flex;
     justify-content: space-between;
-    margin: 0.5rem 0;
+    // margin: 0.5rem 0;
+    // margin-bottom: 0.5rem;
     padding: 4px;
+    // border-top: 1px solid $color-primario;
+    border-bottom: 1px solid $color-primario;
 }
 
 .inputGroup input {
@@ -38,6 +59,7 @@
 
 .groupLogosDiv {
     display: flex;
+    border-bottom: 2px solid $color-primario;
 }
 
 .groupLogo {
@@ -45,9 +67,10 @@
   height: 20px;
   margin-right: 8px;
   vertical-align: middle;
-  background-color: white;
+  background-color: $color-primario;
   padding: 5px;
-  border-bottom-right-radius: 10px;
+//   border-bottom-right-radius: 10px;
+  border-radius: 0 10px 10px 0;
   width: 50px !important;
 }
 
@@ -77,5 +100,25 @@
 
 .botones {
     margin-top: 1rem;
-    text-align: right;
+    display: flex;
+    justify-content: space-evenly;
+    white-space: nowrap;
+
+    & button {
+     display: flex; 
+ gap: 0.5rem;
+ color: $color-primario;
+ background-color: $color-secundario;
+ border: none;
+ border-radius: 5px;
+ padding: 0.25rem 0.5rem;
+ margin: 0.5rem 0;
+ width: min-content;
+ align-items: center;
+ text-align: left;
+ cursor: pointer;
+ &:hover{
+    background-color: $color-secundario-oscuro;
+ }
+    }
 }
