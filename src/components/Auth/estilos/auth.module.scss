@@ -5,8 +5,7 @@
 .notLoggedIn {
 display: flex;
 justify-content: center;
-font-size: 1.5rem;
-font-family: $fuente-contenidos;
+@include font-size(xxl);
 color: $color-primario;
 }
 

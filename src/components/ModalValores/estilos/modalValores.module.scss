@@ -22,8 +22,7 @@
 }
 
 .modalTitulo {
-font-size: 1.1rem;
-font-family: $fuente-contenidos;
+@include font-size(lg);
 font-weight: 500;
 // background-color: $color-terciario-claro;
 border-bottom: 2px solid $color-terciario;
@@ -50,6 +49,14 @@ gap: 0.5rem;
     padding: 4px;
     // border-top: 1px solid $color-primario;
     border-bottom: 1px solid $color-primario;
+
+      align-items: center;
+}
+
+.labelLogoWrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .inputGroup input {
@@ -59,19 +66,43 @@ gap: 0.5rem;
 
 .groupLogosDiv {
     display: flex;
-    border-bottom: 2px solid $color-primario;
+    // border: 1px solid $color-texto-oscuro;
+    // border-top: 2px solid $color-primario-oscuro;
+    // border-bottom: none;
+    justify-content: center;
+    background-color: $color-primario-oscuro;
+    margin-top: 4px;
+}
+
+.labelsLogosDiv {
+    display: flex;
+    align-items: center;
 }
 
 .groupLogo {
 //   width: 24px;
   height: 20px;
-  margin-right: 8px;
+//   margin-right: 8px;
   vertical-align: middle;
-  background-color: $color-primario;
+//   background-color: $color-texto-oscuro;
   padding: 5px;
 //   border-bottom-right-radius: 10px;
-  border-radius: 0 10px 10px 0;
+//   border-radius: 0 10px 10px 0;
   width: 50px !important;
+}
+
+.labelLogo {
+//   width: 24px;
+  height: 20px;
+//   margin-right: 8px;
+  vertical-align: middle;
+  display: flex;
+  align-items: center;
+//   background-color: $color-primario;
+//   padding: 5px;
+//   border-bottom-right-radius: 10px;
+//   border-radius: 0 10px 10px 0;
+//   width: 50px !important;
 }
 
 .groupColchon {
@@ -103,22 +134,4 @@ gap: 0.5rem;
     display: flex;
     justify-content: space-evenly;
     white-space: nowrap;
-
-    & button {
-     display: flex; 
- gap: 0.5rem;
- color: $color-primario;
- background-color: $color-secundario;
- border: none;
- border-radius: 5px;
- padding: 0.25rem 0.5rem;
- margin: 0.5rem 0;
- width: min-content;
- align-items: center;
- text-align: left;
- cursor: pointer;
- &:hover{
-    background-color: $color-secundario-oscuro;
- }
-    }
 }

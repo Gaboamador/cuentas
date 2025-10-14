@@ -1,9 +1,10 @@
+@use './styles/variables.scss' as *;
+
 body {
   margin: 0;
-  overflow-y: scroll; 
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  overflow-y: scroll;
+  font-family: $fuente-contenidos, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -12,3 +13,37 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+ select, input, button, textarea {
+  font-family: inherit;
+}
+
+button {     
+display: flex; 
+ gap: 0.5rem;
+ color: $color-primario;
+ background-color: $color-secundario;
+ border: none;
+ border: 1px solid $color-secundario-oscuro;
+ border-radius: 5px;
+ padding: 0.25rem 0.5rem;
+ margin: 0.5rem 0;
+ width: min-content;
+ align-items: center;
+ text-align: left;
+ cursor: pointer;
+ &:hover{
+    background-color: $color-secundario-oscuro;
+ }
+ }
+
+ select {
+       background-color: $color-primario;
+        border-radius: 5px;
+        padding: 0.125rem 0.25rem;
+        margin: 0.5rem 0;
+        cursor: pointer;
+        padding: 0.25rem 0.5rem;
+ }
+
+

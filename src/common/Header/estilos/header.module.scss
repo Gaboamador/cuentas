@@ -21,22 +21,15 @@
 }
 
 .titulo {
-    font-size: 1.2rem;
+    @include font-size(xl);
     font-weight: 600;
     color: $color-secundario-oscuro;
 }
 
 .logOutButton {
-     display: flex; 
-   justify-content: center;
- gap: 0.5rem;
  color: $color-texto-oscuro;
  background-color: $color-terciario;
- border: none;
- border-radius: 5px;
- padding: 0.25rem 0.5rem;
- align-items: center;
- cursor: pointer;
+width: fit-content;
 
   &:hover{
     background-color: $color-terciario-oscuro;

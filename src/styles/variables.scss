@@ -27,7 +27,7 @@ $color-primario-claro: light-variant($color-primario);
 $color-primario-oscuro: dark-variant($color-primario);
 $color-secundario-claro: light-variant($color-secundario);
 $color-secundario-oscuro: dark-variant($color-secundario);
-$color-terciario-claro: light-variant($color-terciario);
+$color-terciario-claro: color.adjust($color-terciario, $lightness: 15%);
 $color-terciario-oscuro: dark-variant($color-terciario);
 
 // Tipografías

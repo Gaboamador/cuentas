@@ -1,13 +1,32 @@
-import React, { useState, useEffect } from "react";
-import valoresMapping from "../../utils/valoresMapping";
+import React, { useState, useEffect, useContext } from "react";
+import UserContext from '../../context/userContext'
+import getValoresMapping from "../../utils/valoresMapping";
+import { obtenerDatosUsuario } from "../../utils/firestoreHelper";
 import styles from "./estilos/modalValores.module.scss";
 import bbva from "../../logos/bbva.svg"
-import bna from "../../logos/bnaNEW.svg"
+import bna from "../../logos/bna.svg"
 import dolares from "../../logos/dolar.svg"
-import expensas from "../../logos/octopusNEW.svg"
+import expensas from "../../logos/octopus.svg"
+import mc from "../../logos/mc.svg"
+import visa from "../../logos/visa.svg"
 import formatearMes from "../../utils/formatearMes";
 
 export default function ModalValores({ valores, setValores, onClose, mesActual }) {
+  const { user } = useContext(UserContext);
+  const [depto, setDepto] = useState(null)
+  const [cochera, setCochera] = useState(null)
+  const valoresMapping = getValoresMapping(depto, cochera);
+  useEffect(() => {
+      if (!user) return;
+
+      const fetchPerfil = async () => {
+        const data = await obtenerDatosUsuario(user.uid);
+        setDepto(data.depto)
+        setCochera(data.cochera)
+      };
+
+      fetchPerfil();
+    }, [user]);
   const [localValores, setLocalValores] = useState({});
 
   // Inicializamos valores con formato (coma + puntos) o vacíos
@@ -87,8 +106,10 @@ const groupLogos = {
   bna: bna,
   dolares: dolares,
   expensas: expensas,
+  MasterCard: mc,
+  VISA: visa,
+  "VISA (Total resumen)": visa,
 };
-
 
 return (
     <div className={styles.modalValoresOverlay}>
@@ -98,32 +119,46 @@ return (
                     {Object.entries(grupos).map(([group, items]) => (
                     <div key={group} className={`${groupClass[group]} ${styles.groupsDiv}`}>
 
-                        {/* Logo del grupo */}
                         <div>
-                        {groupLogos[group] && (
-                        <div className={styles.groupLogosDiv}>
-                        <img
-                            src={groupLogos[group]}
-                            alt={group}
-                            className={styles.groupLogo}
-                        />
-                        </div>
-                        )}
+                          {groupLogos[group] && (
+                            <div className={styles.groupLogosDiv}>
+                              <img
+                                  src={groupLogos[group]}
+                                  alt={group}
+                                  className={styles.groupLogo}
+                              />
+                            </div>
+                          )}
                         </div>
 
-                        {items.map(({ key, label }) => (
-                        <div key={key} className={styles.inputGroup}>
-                            <label>{label}</label>
+                        {items.map(({ key, label }) => {
+                          const hasLogo = !!groupLogos[label];
+                          return (
+                          <div key={key} className={styles.inputGroup}>
+                            <div className={styles.labelLogoWrapper}>
+                              {/* {!hasLogo &&
+                              <label>{label}</label>
+                              } */}
+                              {/* <label>{label}</label> */}
+                              {hasLogo && (
+                                <img
+                                  src={groupLogos[label]}
+                                  alt={label}
+                                  className={styles.labelLogo}
+                                />
+                              )}
+                              <label>{label}</label>
+                            </div>
                             <input
-                            type="text"
-                            name={key}
-                            value={localValores[key] || ""}
-                            onChange={handleChange}
-                            onBlur={() => handleBlur(key)}
-                            onFocus={(e) => e.target.select()}
+                              type="text"
+                              name={key}
+                              value={localValores[key] || ""}
+                              onChange={handleChange}
+                              onBlur={() => handleBlur(key)}
+                              onFocus={(e) => e.target.select()}
                             />
                         </div>
-                        ))}
+                      )})}
                     </div>
                     ))}
                 </div>

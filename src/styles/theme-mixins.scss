@@ -52,3 +52,35 @@ $breakpoints: (
 @function dark-variant($color) {
   @return color.adjust($color, $lightness: -20%);
 }
+
+// función genérica para acceder a los tokens
+@function token($group, $key) {
+  @return map-get(map-get($tokens, $group), $key);
+}
+
+// mixin de tipografía
+@mixin font-size($key) {
+  font-size: token(font-size, $key);
+}
+
+// mixin de espaciado
+@mixin padding-y($key) {
+  padding-top: token(spacing, $key);
+  padding-bottom: token(spacing, $key);
+}
+
+// mixin de sombra
+@mixin shadow($key) {
+  box-shadow: token(shadow, $key);
+}
+
+$tokens: (
+  font-size: (
+    xs: 0.7rem,
+    sm: 0.75rem,
+    md: 0.85rem,
+    lg: 1.1rem,
+    xl: 1.25rem,
+    xxl: 1.5rem,
+  ),
+);

@@ -3,17 +3,22 @@ import { calcularFormulas } from "../../utils/formulas";
 import { guardarPlanilla, obtenerDatosUsuario } from "../../utils/firestoreHelper";
 import UserContext from "../../context/userContext";
 import styles from './estilos/tablaCuentas.module.scss'
-import valoresMapping from "../../utils/valoresMapping";
+import getValoresMapping from "../../utils/valoresMapping";
 import ModalValores from "../ModalValores";
 import formatearMes from "../../utils/formatearMes";
 import { FiEdit } from "react-icons/fi";
-import CopiarBoton from "../CopiarBoton";
 import textos from "../../utils/textos";
 import CopiarDropdown from "../CopiarDropdown";
 
 export default function TablaCuentas({ planilla, onGuardar, mostrarModal, setMostrarModal }) {
   const { user } = useContext(UserContext);
+  const [direccion, setDireccion] = useState(null)
+    const [detalle, setDetalle] = useState(null)
+    const [depto, setDepto] = useState(null)
+    const [cochera, setCochera] = useState(null)
+    const [nombre, setNombre] = useState(null)
 
+  const valoresMapping = getValoresMapping(depto, cochera);
 const [valores, setValores] = useState(() => {
   const inicial = planilla.data?.valores || Object.keys(valoresMapping).reduce((acc, key) => {
     acc[key] = "";
@@ -77,11 +82,7 @@ const obtenerMesAnterior = (mesActual) => {
 };
 const mesAnterior = obtenerMesAnterior(planilla.mes);
 
-        const [direccion, setDireccion] = useState(null)
-    const [detalle, setDetalle] = useState(null)
-    const [depto, setDepto] = useState(null)
-    const [cochera, setCochera] = useState(null)
-    const [nombre, setNombre] = useState(null)
+    
   useEffect(() => {
     if (!user) return;
 
@@ -228,7 +229,7 @@ const mesAnterior = obtenerMesAnterior(planilla.mes);
             <td>${fmt(valores.exp2)}</td>
           </tr>
           <tr>
-            <td>Expensas Total</td>
+            <td>Expensas Totales</td>
             <td>${fmt(resultados.expensas)}</td>
           </tr>
         </tbody>

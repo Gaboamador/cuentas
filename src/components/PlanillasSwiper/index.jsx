@@ -104,7 +104,7 @@ const [mostrarModal, setMostrarModal] = useState(false);
 
   return (
       <div>
-        <div className={`${styles.controles} ${mostrarModal ? styles.modalActive : ''}`}>
+        <div className={`${styles.controles}`}>
           <div>
             <select onChange={(e) => irAlMes(e.target.value)} defaultValue="">
               <option value="">Ir al mes...</option>
@@ -125,9 +125,9 @@ const [mostrarModal, setMostrarModal] = useState(false);
         </div>
 
       {mostrarSelector && (
-        <div className={styles.modalContainer}>
-          <div className={styles.modalTitulo}>Agregar planilla</div>
-          <div className={styles.modalBotones}>
+        <div className={styles.agregarPlanillaContainer}>
+          <div className={styles.agregarPlanillaTitulo}>Agregar planilla</div>
+          <div className={styles.agregarPlanillaBotones}>
             <select value={nuevoMes} onChange={(e) => setNuevoMes(e.target.value)}>
               <option value="">Mes</option>
               {meses.map((m,i) => (
@@ -135,10 +135,10 @@ const [mostrarModal, setMostrarModal] = useState(false);
               ))}
             </select>
             <select value={nuevoAnio} onChange={(e)=>setNuevoAnio(e.target.value)}>
-              {Array.from({length:6},(_,i)=> new Date().getFullYear()-2+i).map(y => <option key={y} value={y}>{y}</option>)}
+              {Array.from({length:11},(_,i)=> new Date().getFullYear()+i).map(y => <option key={y} value={y}>{y}</option>)}
             </select>
-            <button onClick={confirmarNuevoMes}>Confirmar</button>
-            <button onClick={()=>setMostrarSelector(false)}>Cancelar</button>
+            <button className={styles.confirmarButton} onClick={confirmarNuevoMes}>Confirmar</button>
+            <button className={styles.cancelarButton} onClick={()=>setMostrarSelector(false)}>Cancelar</button>
           </div>
         </div>
       )}

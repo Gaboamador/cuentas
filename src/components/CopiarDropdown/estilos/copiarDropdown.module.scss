@@ -5,21 +5,20 @@
 .dropdown {
   position: relative;
   display: inline-block;
-  font-family: sans-serif;
 }
 
 .botonPrincipal {
   background-color: $color-primario;
   color: $color-texto-oscuro;
-  border: none;
-  padding: 8px 16px;
+  // border: none;
+  // padding: 8px 16px;
   border-radius: 5px;
   cursor: pointer;
-  font-weight: 500;
   display: flex;
   align-items: center;
   gap: 8px;
   transition: background 0.2s;
+  width: fit-content;
 }
 
 .botonPrincipal:hover {
@@ -27,13 +26,13 @@
 }
 
 .flecha {
-  font-size: 0.8em;
+  @include font-size(sm);
 }
 
 .menu {
   position: absolute;
-  top: calc(100% + 4px);
-  left: 0;
+  // top: calc(100% + 4px);
+  right: 0;
   background: $color-secundario;
   border: 1px solid #ccc;
   border-radius: 6px;
@@ -55,7 +54,7 @@
 }
 
 .item {
-  font-size: 0.9rem;
+  @include font-size(md);
     padding: 10px;
   cursor: pointer;
   transition: background 0.15s;
@@ -64,5 +63,5 @@
 
 .item:hover {
   background-color: #f1f1f1;
-  color: $color-secundario;
+  color: $color-texto-oscuro;
 }
