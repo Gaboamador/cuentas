@@ -1,14 +1,16 @@
 @use 'sass:color';
 @use '../styles/theme-mixins' as *;
 
-// Colores principales
-// $color-primario: #232D4F;
-// $color-secundario: #E6BB61; 
-// $color-terciario: #45658D;
+// Colores principales y variantes
+$color-primario: #008080;
+$color-secundario: #c0c0c0;
+$color-terciario: #FF6F61;
 
-$color-primario: #EBE9E9;
-$color-secundario: #587B7F; 
-$color-terciario: #F6B092;
+// Variantes
+$color-secundario-claro: lighten($color-secundario, 10%);
+$color-primario-oscuro: darken($color-primario, 10%);
+$color-secundario-oscuro: darken($color-secundario, 10%);
+$color-terciario-oscuro: darken($color-terciario, 10%);
 
 // Colores de texto y otros colores UI
 $color-texto-claro: #ffffff;
@@ -22,19 +24,23 @@ $color-dolares: #278664;
 $color-expensas: #ed7d31;
 $color-totales: #0d0d0d;
 
-// Variants
-$color-primario-claro: light-variant($color-primario);
-$color-primario-oscuro: dark-variant($color-primario);
-$color-secundario-claro: light-variant($color-secundario);
-$color-secundario-oscuro: dark-variant($color-secundario);
-$color-terciario-claro: color.adjust($color-terciario, $lightness: 15%);
-$color-terciario-oscuro: dark-variant($color-terciario);
-
 // Tipografías
 @import url('https://fonts.googleapis.com/css2?family=Red+Hat+Text:ital,wght@0,300..700;1,300..700&display=swap');
 
 // $fuente-titulos: "Figtree", sans-serif;
 $fuente-contenidos: 'Red Hat Text', 'Roboto', sans-serif;
+
+
+// root
+:root {
+--color-primario: #{$color-primario};
+--color-secundario: #{$color-secundario};
+--color-terciario: #{$color-terciario};
+--color-texto-claro: #{$color-texto-claro};
+--color-texto-oscuro: #{$color-texto-oscuro};
+--fuente-contenidos: #{$fuente-contenidos};
+}
+
 
 // Barra de desplazamiento
 ::-webkit-scrollbar {
@@ -46,5 +52,5 @@ background: $color-secundario;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-background: $color-secundario-oscuro;
+background: darken($color-secundario, 10%);
 }

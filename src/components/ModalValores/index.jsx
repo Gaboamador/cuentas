@@ -163,8 +163,8 @@ return (
                     ))}
                 </div>
                 <div className={styles.botones}>
-                    <button onClick={handleCerrar}>Guardar y cerrar</button>
-                    <button onClick={onClose}>Cancelar</button>
+                    <button className={'btn btn--primario'} onClick={handleCerrar}>Guardar y cerrar</button>
+                    <button className={'btn btn--primario'} onClick={onClose}>Cancelar</button>
                 </div>
         </div>
     </div>

@@ -106,10 +106,7 @@ const mesAnterior = obtenerMesAnterior(planilla.mes);
           {formatearMes(planilla.mes).toUpperCase()}
         </div>
           
-        <button
-          onClick={() => setMostrarModal(true)}
-          className={styles.ingresarDatosButton}
-          >
+        <button className={`btn btn--primario ${styles.ingresarDatosButton}`} onClick={() => setMostrarModal(true)}>
           <span><FiEdit/></span>
           <span>Ingresar datos</span>
         </button>
@@ -235,7 +232,7 @@ const mesAnterior = obtenerMesAnterior(planilla.mes);
         </tbody>
       </table>
 
-      <button className={styles.guardarPlanillaButton} onClick={handleGuardar}>
+      <button className={`btn btn--primario ${styles.guardarPlanillaButton}`} onClick={handleGuardar}>
         Guardar planilla
       </button>
     </div>

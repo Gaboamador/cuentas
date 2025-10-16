@@ -18,11 +18,9 @@ code {
   font-family: inherit;
 }
 
-button {     
+.btn {     
 display: flex; 
  gap: 0.5rem;
- color: $color-primario;
- background-color: $color-secundario;
  border: none;
  border: 1px solid $color-secundario-oscuro;
  border-radius: 5px;
@@ -32,18 +30,38 @@ display: flex;
  align-items: center;
  text-align: left;
  cursor: pointer;
- &:hover{
-    background-color: $color-secundario-oscuro;
- }
  }
 
+ .btn--primario {
+  color: $color-texto-claro;
+  background-color: $color-primario;
+  border-color: $color-terciario-oscuro;
+  &:hover {
+    background-color: $color-primario-oscuro;
+  }
+}
+
+.btn--secundario {
+  color: $color-texto-oscuro;
+  background-color: $color-secundario-claro;
+  border-color: $color-secundario-oscuro;
+  &:hover {
+    background-color: $color-secundario;
+  }
+}
+
  select {
-       background-color: $color-primario;
-        border-radius: 5px;
-        padding: 0.125rem 0.25rem;
-        margin: 0.5rem 0;
-        cursor: pointer;
-        padding: 0.25rem 0.5rem;
+    color: $color-texto-oscuro;
+    background-color: $color-secundario-claro;
+    border-radius: 5px;
+    padding: 0.125rem 0.25rem;
+    margin: 0.5rem 0;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    
+    &:hover {
+      background-color: $color-secundario;
+    }
  }
 
 

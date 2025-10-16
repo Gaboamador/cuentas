@@ -27,11 +27,7 @@ export default function CopiarDropdown({ opciones }) {
 
   return (
     <div className={styles.dropdown} ref={dropdownRef}>
-      <button
-        className={styles.botonPrincipal}
-        onClick={() => setAbierto(!abierto)}
-      >
-        {/* Copiar... */}
+      <button className={`btn btn--secundario ${styles.botonPrincipal}`} onClick={() => setAbierto(!abierto)}>
         {copiadoLabel ? `${copiadoLabel} copiado!` : 'Copiar...'}
         <span className={styles.flecha}>{abierto ? "▲" : "▼"}</span>
       </button>

@@ -6,7 +6,7 @@
 display: flex;
 justify-content: space-between;
 align-items: center;
-color: $color-secundario-oscuro;
+color: $color-primario;
 }
 
 .tituloTablaContainer > div:first-child {
@@ -26,16 +26,11 @@ color: $color-secundario-oscuro;
   font-weight: 600;
 }
 
-.ingresarDatosButton {
-
-}
-
 .tablaCuentasContainer {
   width: 100%;
   max-width: 100vw;
   overflow-x: auto;
   display: block;
-  // padding: .5rem 0;
 }
 
 .tablaCuentas {
@@ -92,7 +87,7 @@ color: $color-secundario-oscuro;
 }
 
 .tablaCuentas th {
-  color: $color-primario;
+  color: $color-texto-claro;
 }
 
 .tablaCuentas input {
@@ -107,12 +102,5 @@ color: $color-secundario-oscuro;
 .guardarPlanillaButton {
   margin: 0 auto;
   margin-top: 1rem;
-  color: $color-texto-oscuro;
-  background-color: $color-secundario-claro;
   width: fit-content;
-
-  &:hover{
-    color: $color-texto-claro;
-    background-color: $color-secundario;
- }
 }

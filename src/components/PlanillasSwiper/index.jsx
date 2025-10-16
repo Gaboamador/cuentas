@@ -114,10 +114,7 @@ const [mostrarModal, setMostrarModal] = useState(false);
             </select>
           </div>
           <div className={styles.agregarPlanilla}>
-            <button
-              onClick={crearPlanillaEnBlanco}
-              className={styles.agregarPlanillaButton}
-            >
+            <button className={`btn btn--primario ${styles.agregarPlanillaButton}`} onClick={crearPlanillaEnBlanco}>
                 <span><GrTableAdd/></span>
                 <span>Nuevo mes</span>
             </button>
@@ -137,8 +134,8 @@ const [mostrarModal, setMostrarModal] = useState(false);
             <select value={nuevoAnio} onChange={(e)=>setNuevoAnio(e.target.value)}>
               {Array.from({length:11},(_,i)=> new Date().getFullYear()+i).map(y => <option key={y} value={y}>{y}</option>)}
             </select>
-            <button className={styles.confirmarButton} onClick={confirmarNuevoMes}>Confirmar</button>
-            <button className={styles.cancelarButton} onClick={()=>setMostrarSelector(false)}>Cancelar</button>
+            <button className={`btn btn--primario ${styles.confirmarButton}`} onClick={confirmarNuevoMes}>Confirmar</button>
+            <button className={`btn btn--primario ${styles.cancelarButton}`} onClick={()=>setMostrarSelector(false)}>Cancelar</button>
           </div>
         </div>
       )}

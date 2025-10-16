@@ -8,10 +8,6 @@
 }
 
 .botonPrincipal {
-  background-color: $color-primario;
-  color: $color-texto-oscuro;
-  // border: none;
-  // padding: 8px 16px;
   border-radius: 5px;
   cursor: pointer;
   display: flex;
@@ -21,9 +17,6 @@
   width: fit-content;
 }
 
-.botonPrincipal:hover {
-  background-color: $color-primario-oscuro;
-}
 
 .flecha {
   @include font-size(sm);

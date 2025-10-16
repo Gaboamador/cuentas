@@ -10,28 +10,33 @@
   transition: transform 0.3s ease-in-out;
   border-top: none;
   min-height: 50px;
-  color: $color-texto-oscuro;
-  background-color: $color-primario;
+  background-color: rgb(225,225,225);
   z-index:2 !important;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: 0.5s;
   user-select: none;
-  padding: 0 1rem; // opcional, margen interno
-  border-bottom: 2px solid $color-secundario;
+  padding: 0 1rem;
+  border-bottom: 2px solid $color-terciario;
+}
+
+.logoTitulo {
+display: flex;
+align-items: center;
+gap: 1rem;
 }
 
 .titulo {
-    @include font-size(xl);
+    @include font-size(xxl);
     font-weight: 600;
-    color: $color-secundario-oscuro;
+    color: $color-primario-oscuro;
 }
 
 .logOutButton {
- color: $color-texto-oscuro;
- background-color: $color-terciario;
 width: fit-content;
+}
 
-  &:hover{
-    background-color: $color-terciario-oscuro;
- }
+.logo {
+height: 40px;
+width: 40px;
+padding: 0px;
 }
