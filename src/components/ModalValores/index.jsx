@@ -117,7 +117,7 @@ return (
             <div className={styles.modalTitulo}>INGRESAR VALORES - {formatearMes(mesActual)}</div>
                 <div className={styles.inputs}>
                     {Object.entries(grupos).map(([group, items]) => (
-                    <div key={group} className={`${groupClass[group]} ${styles.groupsDiv}`}>
+                    <div key={group} className={`${styles.groups} ${groupClass[group]} ${styles.groupsDiv}`}>
 
                         <div>
                           {groupLogos[group] && (
@@ -147,7 +147,7 @@ return (
                                   className={styles.labelLogo}
                                 />
                               )}
-                              <label>{label}</label>
+                              <label className={styles.inputLabel}>{label}</label>
                             </div>
                             <input
                               type="text"

@@ -27,6 +27,19 @@ max-width: 100%;
 
 }
 
+.irAplanillaContainer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid $color-secundario-oscuro;
+    padding: 0 0.5rem;
+    border-radius: 8px;
+    background-color: whitesmoke;
+}
+
+.irAplanilla {
+    @include font-size(md)
+}
 
 .agregarPlanilla {
     display: flex;
@@ -38,8 +51,8 @@ max-width: 100%;
 }
 
 .agregarPlanillaContainer {
-border: 1px solid $color-secundario;
-background-color: #ddd;
+border: 1px solid $color-primario;
+background-color: whitesmoke;
 padding: 1rem;
 display: flex;
 flex-direction: column;
@@ -56,7 +69,8 @@ margin: 0 auto;
     @include font-size(xl);
     font-weight: 500;
     display: flex;
-    
+    color: $color-primario-oscuro;
+    font-family: $fuente-titulos;
 }
 
 .agregarPlanillaBotones {

@@ -26,7 +26,7 @@
   position: absolute;
   // top: calc(100% + 4px);
   right: 0;
-  background: $color-secundario;
+  background: $color-secundario-claro;
   border: 1px solid #ccc;
   border-radius: 6px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -51,10 +51,10 @@
     padding: 10px;
   cursor: pointer;
   transition: background 0.15s;
-  color: $color-primario;
+  color: $color-primario-oscuro;
 }
 
 .item:hover {
-  background-color: #f1f1f1;
+  background-color: whitesmoke;
   color: $color-texto-oscuro;
 }

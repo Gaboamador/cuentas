@@ -105,9 +105,12 @@ const [mostrarModal, setMostrarModal] = useState(false);
   return (
       <div>
         <div className={`${styles.controles}`}>
-          <div>
-            <select onChange={(e) => irAlMes(e.target.value)} defaultValue="">
-              <option value="">Ir al mes...</option>
+          <div className={styles.irAplanillaContainer}>
+            <div className={styles.irAplanilla}>Ir a planilla</div>
+            <select
+              onChange={(e) => irAlMes(e.target.value)}
+              value={planillas[planillaActivaIndex]?.mes || ""}
+            >
               {planillas.map(p => (
                 <option key={p.mes} value={p.mes}>{p.mes}</option>
               ))}

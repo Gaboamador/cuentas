@@ -7,7 +7,9 @@ $color-secundario: #c0c0c0;
 $color-terciario: #FF6F61;
 
 // Variantes
+$color-primario-claro:  lighten($color-primario, 10%);
 $color-secundario-claro: lighten($color-secundario, 10%);
+$color-terciario-claro:  lighten($color-terciario, 10%);
 $color-primario-oscuro: darken($color-primario, 10%);
 $color-secundario-oscuro: darken($color-secundario, 10%);
 $color-terciario-oscuro: darken($color-terciario, 10%);
@@ -25,9 +27,9 @@ $color-expensas: #ed7d31;
 $color-totales: #0d0d0d;
 
 // Tipografías
-@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Text:ital,wght@0,300..700;1,300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&family=Red+Hat+Text:ital,wght@0,300..700;1,300..700&display=swap');
 
-// $fuente-titulos: "Figtree", sans-serif;
+$fuente-titulos: 'Red Hat Display', sans-serif;
 $fuente-contenidos: 'Red Hat Text', 'Roboto', sans-serif;
 
 
@@ -38,6 +40,7 @@ $fuente-contenidos: 'Red Hat Text', 'Roboto', sans-serif;
 --color-terciario: #{$color-terciario};
 --color-texto-claro: #{$color-texto-claro};
 --color-texto-oscuro: #{$color-texto-oscuro};
+--fuente-titulos: #{$fuente-titulos};
 --fuente-contenidos: #{$fuente-contenidos};
 }
 
