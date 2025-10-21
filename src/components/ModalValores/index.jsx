@@ -192,6 +192,7 @@ return (
                                   value={localVencimientos[key] || ""}
                                   onChange={handleVencChange}
                                   className={styles.inputVenc}
+                                  placeholder="Vencimiento"
                                 />
                                 <input
                                   type="text"
