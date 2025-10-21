@@ -15,6 +15,7 @@
 }
 
 .modalValores {
+    position: relative;
     background-color: whitesmoke;
     padding: 1rem 1.5rem;
     border-radius: 0 0 0 10px;
@@ -24,6 +25,24 @@
     border: 2px solid $color-terciario;
     @include font-size(md);
 }
+
+.closeButton {
+  position: absolute;
+  top: 6px;
+  right: 3px;
+  background: transparent;
+  border: none;
+  color: $color-terciario-oscuro;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+  z-index: 10;
+
+  &:hover {
+    color: $color-terciario-oscuro;
+    transform: scale(1.2);
+  }
+}
+
 
 .modalTitulo {
     @include font-size(lg);
@@ -128,4 +147,21 @@ border-bottom: 1px solid $color-primario;
     display: flex;
     justify-content: space-evenly;
     white-space: nowrap;
+}
+
+.dualInput {
+  display: flex;
+  gap: 0.5rem;
+
+  @include media-down(sm) {
+   flex-direction: column; 
+  }
+
+  input[type="text"] {
+    flex: 1;
+  }
+
+  .inputVenc {
+    opacity: 0.9;
+  }
 }

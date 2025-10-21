@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper-bundle.css";
-import { obtenerTodasLasPlanillas } from "../../utils/firestoreHelper";
+import { obtenerTodasLasPlanillas, eliminarPlanilla } from "../../utils/firestoreHelper";
 import TablaCuentas from "../TablaCuentas";
 import UserContext from "../../context/userContext";
+import formatearMes from "../../utils/formatearMes";
 import styles from './estilos/planillasSwiper.module.scss'
 import globalStyles from '../../styles/globalStyles.module.scss'
 import { GrTableAdd } from "react-icons/gr";
@@ -99,6 +100,39 @@ export default function PlanillasSwiper() {
     );
   };
 
+  // En el componente padre que contiene el Swiper
+const handleEliminarPlanilla = async (mesAEliminar) => {
+  const confirmacion = window.confirm(
+    `Va a eliminarse la planilla perteneciente a ${formatearMes(mesAEliminar).toUpperCase()}. Confirmar?`
+  );
+  if (!confirmacion) return;
+
+  try {
+    // Borra del servidor
+    await eliminarPlanilla(user.uid, mesAEliminar);
+    alert("Planilla eliminada correctamente.");
+    
+    // Actualiza la lista local de planillas
+    const nuevasPlanillas = planillas.filter(p => p.mes !== mesAEliminar);
+    setPlanillas(nuevasPlanillas);
+
+    // Ajusta índice activo
+    let nuevoIndex = planillaActivaIndex;
+    if (nuevoIndex >= nuevasPlanillas.length) {
+      nuevoIndex = nuevasPlanillas.length - 1;
+    }
+    setPlanillaActivaIndex(nuevoIndex);
+
+    // Mueve el Swiper a la slide correcta
+    swiperRef.current?.slideTo(nuevoIndex);
+
+  } catch (error) {
+    console.error("Error al eliminar la planilla:", error);
+    alert("No se pudo eliminar la planilla. Intente nuevamente.");
+  }
+};
+
+
   // if (!user) return <p className={styles.notLoggedIn}>Inicie sesión para ver sus planillas</p>;
 const [mostrarModal, setMostrarModal] = useState(false);
 
@@ -157,6 +191,7 @@ const [mostrarModal, setMostrarModal] = useState(false);
               <TablaCuentas
                 planilla={planilla}
                 onGuardar={handleGuardarLocal}
+                onEliminar={handleEliminarPlanilla}
                 mostrarModal={mostrarModal}
                 setMostrarModal={setMostrarModal}
               />

@@ -10,7 +10,7 @@ import { FiEdit } from "react-icons/fi";
 import textos from "../../utils/textos";
 import CopiarDropdown from "../CopiarDropdown";
 
-export default function TablaCuentas({ planilla, onGuardar, mostrarModal, setMostrarModal }) {
+export default function TablaCuentas({ planilla, onGuardar, onEliminar, mostrarModal, setMostrarModal }) {
   const { user } = useContext(UserContext);
   const [direccion, setDireccion] = useState(null)
     const [detalle, setDetalle] = useState(null)
@@ -45,6 +45,7 @@ useEffect(() => {
 
   setValores(inicial);
   setResultados(planilla.data?.resultados || {});
+  // eslint-disable-next-line react-hooks/exhaustive-deps
 }, [planilla]);
 
 // 🧮 Calcular resultados cada vez que cambian los valores
@@ -70,8 +71,20 @@ useEffect(() => {
           maximumFractionDigits: 2
         }).format(n);
 
+        // Formatea fechas tipo "2025-11-03" → "03/11"
+  const fmtFecha = (fechaStr) => {
+    if (!fechaStr) return "";
+    const [year, month, day] = fechaStr.split("-");
+    if (!day || !month) return fechaStr; // fallback por si no tiene formato válido
+    return `${day}/${month}`;
+  };
 
-        // Función para obtener el mes anterior en formato 'YYYY-MM'
+  const renderFecha = (fecha) => {
+  if (!fecha) return null;
+  return <span>({fmtFecha(fecha)})</span>;
+};
+
+// Función para obtener el mes anterior en formato 'YYYY-MM'
 const obtenerMesAnterior = (mesActual) => {
   const [anio, mes] = mesActual.split('-').map(Number); // asume formato 'YYYY-MM'
   const fecha = new Date(anio, mes - 1, 1); // mes -1 porque JS usa 0-index
@@ -112,9 +125,6 @@ const mesAnterior = obtenerMesAnterior(planilla.mes);
         </button>
 
         <div>
-          {/* <CopiarBoton label={'email'} texto={textos.paraPortapapeles.MAIL_COMPROBANTE} />
-          <CopiarBoton label={'asunto'} texto={textos.paraPortapapeles.ASUNTO(formatearMes(mesAnterior), direccion, detalle)} />
-          <CopiarBoton label={'cuerpo'} texto={textos.paraPortapapeles.CUERPO(depto, cochera, `$${fmt(valores.exp1)}`, `$${fmt(valores.exp2)}`, `$${fmt(resultados.expensas)}`, nombre)} /> */}
         <CopiarDropdown
           opciones={[
             { label: "Destinatario", texto: textos.paraPortapapeles.MAIL_COMPROBANTE },
@@ -175,9 +185,15 @@ const mesAnterior = obtenerMesAnterior(planilla.mes);
             <th colSpan="4">BBVA</th>
           </tr>
           <tr>
-            <td>VISA</td>
+            <td>
+              <span>VISA</span>
+              {renderFecha(valores.venc_visaBBVATotalResumen)}
+            </td>
             <td>${fmt(resultados.visaBBVANeto)}</td>
-            <td>MC</td>
+            <td>
+              <span>MC</span>
+              {renderFecha(valores.venc_mcBBVA)}
+            </td>
             <td>${fmt(valores.mcBBVA)}</td>
           </tr>
           <tr>
@@ -194,9 +210,15 @@ const mesAnterior = obtenerMesAnterior(planilla.mes);
             <th colSpan="4">BNA</th>
           </tr>
           <tr>
-            <td>VISA</td>
+            <td>
+              <span>VISA</span>
+              {renderFecha(valores.venc_visaBNA)}
+            </td>
             <td>${fmt(valores.visaBNA)}</td>
-            <td>MC</td>
+            <td>
+              <span>MC</span>
+              {renderFecha(valores.venc_mcBNA)}
+            </td>
             <td>${fmt(valores.mcBNA)}</td>
           </tr>
 
@@ -220,9 +242,15 @@ const mesAnterior = obtenerMesAnterior(planilla.mes);
             <th colSpan="4">{valoresMapping.exp1.group.toUpperCase()}</th>
           </tr>
           <tr>
-            <td>{valoresMapping.exp1.label}</td>
+            <td>
+              <span>{valoresMapping.exp1.label}</span>
+              {renderFecha(valores.venc_exp1)}
+            </td>
             <td>${fmt(valores.exp1)}</td>
-            <td>{valoresMapping.exp2.label}</td>
+            <td>
+              <span>{valoresMapping.exp2.label}</span>
+              {renderFecha(valores.venc_exp2)}
+            </td>
             <td>${fmt(valores.exp2)}</td>
           </tr>
           <tr>
@@ -232,9 +260,22 @@ const mesAnterior = obtenerMesAnterior(planilla.mes);
         </tbody>
       </table>
 
-      <button className={`btn btn--primario ${styles.guardarPlanillaButton}`} onClick={handleGuardar}>
-        Guardar planilla
-      </button>
+      <div className={styles.botonesPlanilla}>
+        <button
+          className={`btn btn--primario ${styles.guardarPlanillaButton}`}
+          onClick={handleGuardar}
+        >
+          Guardar planilla
+        </button>
+
+        <button
+          className={`btn btn--secundario ${styles.eliminarPlanillaButton}`}
+          onClick={() => onEliminar(planilla.mes)}
+        >
+          Eliminar planilla
+        </button>
+      </div>
+
     </div>
 
     {mostrarModal && (

@@ -83,6 +83,11 @@ color: $color-primario-oscuro;
   padding: 8px;
 }
 
+.tablaCuentas td span + span {
+  margin-left: 0.3rem;
+  opacity: 0.8;
+}
+
 .tablaCuentas td:nth-child(2) {
   border-right: 1px solid #ccc;
 }
@@ -101,8 +106,13 @@ color: $color-primario-oscuro;
 
 }
 
-.guardarPlanillaButton {
-  margin: 0 auto;
+.botonesPlanilla {
+  display: flex;
+  justify-content: space-evenly;
   margin-top: 1rem;
+}
+
+
+.guardarPlanillaButton, .eliminarPlanillaButton {
   width: fit-content;
 }

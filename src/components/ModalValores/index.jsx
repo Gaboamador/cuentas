@@ -10,6 +10,7 @@ import expensas from "../../logos/octopus.svg"
 import mc from "../../logos/mc.svg"
 import visa from "../../logos/visa.svg"
 import formatearMes from "../../utils/formatearMes";
+import { GrClose } from "react-icons/gr";
 
 export default function ModalValores({ valores, setValores, onClose, mesActual }) {
   const { user } = useContext(UserContext);
@@ -28,12 +29,19 @@ export default function ModalValores({ valores, setValores, onClose, mesActual }
       fetchPerfil();
     }, [user]);
   const [localValores, setLocalValores] = useState({});
+  const [localVencimientos, setLocalVencimientos] = useState({});
+  const sinVencimiento = ["colchon", "cajaAhorroActual", "dbRg5617", "dolares", "valorUSD"];
+
 
   // Inicializamos valores con formato (coma + puntos) o vacíos
   useEffect(() => {
-    const inicial = {};
-    Object.keys(valoresMapping).forEach((key) => {
+  // if (!valores || Object.keys(valoresMapping).length === 0) return;
+  const inicial = {};
+  const inicialVenc = {};
+  Object.keys(valoresMapping).forEach((key) => {
+    if (Object.prototype.hasOwnProperty.call(valores, key)) {
       const val = valores[key];
+      // if (val !== undefined && val !== null) {
       if (val !== undefined && val !== null && val !== 0) {
         const partes = val.toString().split(".");
         const entera = partes[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -42,9 +50,15 @@ export default function ModalValores({ valores, setValores, onClose, mesActual }
       } else {
         inicial[key] = "";
       }
-    });
-    setLocalValores(inicial);
-  }, [valores]);
+      inicialVenc[key] = valores?.[`venc_${key}`] || "";
+    } else {
+      inicial[key] = "";
+      inicialVenc[key] = "";
+    }
+  });
+  setLocalValores(inicial);
+  setLocalVencimientos(inicialVenc);
+}, [valores]);
 
   // Convierte texto con puntos y coma a número real
   const parseNumero = (texto) => {
@@ -69,8 +83,15 @@ export default function ModalValores({ valores, setValores, onClose, mesActual }
     }
   };
 
+  const handleVencChange = (e) => {
+  const { name, value } = e.target;
+  const cleanName = name.replace(/^venc_/, ""); // quitamos prefijo al guardar
+  setLocalVencimientos((prev) => ({ ...prev, [cleanName]: value }));
+};
+
   // Al perder foco, aplicamos puntos automáticamente
-  const handleBlur = (name) => {
+  const handleBlur = (name, event) => {
+    // const value = event.target.value; 
     setLocalValores((prev) => ({
       ...prev,
       [name]: formatNumero(prev[name]),
@@ -81,6 +102,7 @@ export default function ModalValores({ valores, setValores, onClose, mesActual }
     const nuevosValores = {};
     Object.keys(localValores).forEach((k) => {
       nuevosValores[k] = parseNumero(localValores[k]);
+      nuevosValores[`venc_${k}`] = localVencimientos[k] || "";
     });
     setValores(nuevosValores);
     onClose();
@@ -114,6 +136,7 @@ const groupLogos = {
 return (
     <div className={styles.modalValoresOverlay}>
         <div className={styles.modalValores}>
+           <button className={styles.closeButton} onClick={onClose}><GrClose/></button>
             <div className={styles.modalTitulo}>INGRESAR VALORES - {formatearMes(mesActual)}</div>
                 <div className={styles.inputs}>
                     {Object.entries(grupos).map(([group, items]) => (
@@ -149,14 +172,38 @@ return (
                               )}
                               <label className={styles.inputLabel}>{label}</label>
                             </div>
-                            <input
-                              type="text"
-                              name={key}
-                              value={localValores[key] || ""}
-                              onChange={handleChange}
-                              onBlur={() => handleBlur(key)}
-                              onFocus={(e) => e.target.select()}
-                            />
+                            {sinVencimiento.includes(key) ? (
+                              // solo el campo de monto
+                              <input
+                                type="text"
+                                name={key}
+                                value={localValores[key] || ""}
+                                onChange={handleChange}
+                                onBlur={(e) => handleBlur(key, e)}
+                                onFocus={(e) => e.target.select()}
+                                placeholder="Monto"
+                              />
+                            ) : (
+                              // campo doble: monto + vencimiento
+                              <div className={styles.dualInput}>
+                                <input
+                                  type="date"
+                                  name={`venc_${key}`}
+                                  value={localVencimientos[key] || ""}
+                                  onChange={handleVencChange}
+                                  className={styles.inputVenc}
+                                />
+                                <input
+                                  type="text"
+                                  name={key}
+                                  value={localValores[key] || ""}
+                                  onChange={handleChange}
+                                  onBlur={() => handleBlur(key)}
+                                  onFocus={(e) => e.target.select()}
+                                  placeholder="Monto"
+                                />
+                              </div>
+                            )}
                         </div>
                       )})}
                     </div>

@@ -1,4 +1,4 @@
-import { doc, setDoc, getDoc, collection, getDocs } from "firebase/firestore";
+import { doc, setDoc, getDoc, collection, getDocs, deleteDoc } from "firebase/firestore";
 import { db } from "./firebase";
 
 /**
@@ -56,4 +56,17 @@ export const obtenerDatosUsuario = async (userId) => {
   const ref = doc(db, "users", userId);
   const snapshot = await getDoc(ref);
   return snapshot.exists() ? snapshot.data() : null;
+};
+
+/**
+ * Elimina la planilla de un usuario para un mes determinado
+ */
+export const eliminarPlanilla = async (userId, mes) => {
+  try {
+    const ref = doc(db, "users", userId, "planillas", mes);
+    await deleteDoc(ref);
+    console.log("Planilla eliminada correctamente:", ref.path);
+  } catch (error) {
+    console.error("Error al eliminar planilla:", error);
+  }
 };
